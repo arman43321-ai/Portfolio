@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naina — Senior Barista</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5efe6;
+    --warm-white: #faf7f2;
+    --espresso: #2c1a0e;
+    --latte: #8b5e3c;
+    --caramel: #c4874a;
+    --gold: #d4a853;
+    --steam: rgba(245,239,230,0.08);
+    --dark-roast: #1a0f07;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark-roast);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 30% 50%, #3d1f0a 0%, #1a0f07 55%, #0d0702 100%);
+  }
+
+  .hero-rings {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(196,135,74,0.12);
+    animation: breathe 8s ease-in-out infinite;
+  }
+  .ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .ring:nth-child(2) { width: 500px; height: 500px; animation-delay: 1.5s; border-color: rgba(196,135,74,0.08); }
+  .ring:nth-child(3) { width: 720px; height: 720px; animation-delay: 3s; border-color: rgba(196,135,74,0.05); }
+  .ring:nth-child(4) { width: 950px; height: 950px; animation-delay: 4.5s; border-color: rgba(196,135,74,0.03); }
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.7; }
+  }
+
+  /* Steam animation */
+  .steam-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .steam-particle {
+    position: absolute;
+    width: 2px;
+    border-radius: 50%;
+    background: rgba(245,239,230,0.15);
+    animation: steamRise linear infinite;
+    filter: blur(1px);
+  }
+
+  @keyframes steamRise {
+    0% { transform: translateY(0) translateX(0) scaleX(1); opacity: 0; }
+    10% { opacity: 0.6; }
+    50% { transform: translateY(-40vh) translateX(20px) scaleX(2); opacity: 0.3; }
+    100% { transform: translateY(-80vh) translateX(-10px) scaleX(0.5); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 1.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-photo-frame {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 2rem;
+    animation: fadeUp 1.4s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--caramel), var(--gold), var(--latte), var(--caramel));
+    animation: spinGold 12s linear infinite;
+    z-index: -1;
+  }
+
+  .hero-photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1px solid rgba(196,135,74,0.25);
+    z-index: -2;
+  }
+
+  @keyframes spinGold {
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    border: 4px solid var(--dark-roast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3d1f0a, #1a0f07);
+    font-size: 4rem;
+    overflow: hidden;
+  }
+
+  .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3d2210 0%, #1f0f05 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    filter: saturate(0.8);
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 1.4s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-name span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-title {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 200;
+    letter-spacing: 0.5em;
+    color: rgba(245,239,230,0.6);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 1.4s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,239,230,0.75);
+    max-width: 420px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+    animation: fadeUp 1.4s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    animation: fadeUp 1.4s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: rgba(245,239,230,0.5);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 0.35rem;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeUp 1.4s 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .scroll-hint span {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    color: rgba(245,239,230,0.35);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(212,168,83,0.6), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.7); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 7rem 2rem;
+    position: relative;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: linear-gradient(180deg, var(--dark-roast) 0%, #120a04 100%);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 6rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .coffee-cup-art {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .about-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  .about-quote::before {
+    content: '"';
+    font-size: 6rem;
+    color: var(--gold);
+    opacity: 0.3;
+    display: block;
+    line-height: 0.5;
+    margin-bottom: 1rem;
+  }
+
+  .about-text {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: rgba(245,239,230,0.7);
+    line-height: 1.9;
+  }
+
+  .cert-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(212,168,83,0.4);
+    border-radius: 2px;
+    background: rgba(212,168,83,0.05);
+  }
+
+  .cert-badge .badge-icon { font-size: 1.3rem; }
+  .cert-badge .badge-text {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience-section {
+    background: #0f0804;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .experience-section::before {
+    content: 'EXPERIENCE';
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 12rem;
+    font-weight: 700;
+    color: rgba(196,135,74,0.03);
+    pointer-events: none;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+  }
+
+  .timeline {
+    margin-top: 4rem;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--caramel), var(--gold), var(--caramel), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 3rem;
+    padding-bottom: 4rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 20px rgba(212,168,83,0.5);
+  }
+
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,168,83,0.3);
+  }
+
+  .timeline-period {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--caramel);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-company {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-role {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .timeline-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(245,239,230,0.6);
+    line-height: 1.8;
+    max-width: 580px;
+  }
+
+  /* EVENTS special */
+  .events-card {
+    margin-top: 4rem;
+    padding: 3rem;
+    border: 1px solid rgba(212,168,83,0.2);
+    background: linear-gradient(135deg, rgba(212,168,83,0.04), rgba(196,135,74,0.02));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .events-card::before {
+    content: '☕';
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    font-size: 12rem;
+    opacity: 0.04;
+  }
+
+  .events-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .events-locations {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+
+  .location-tag {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--caramel);
+    border: 1px solid rgba(196,135,74,0.3);
+    padding: 0.3rem 0.75rem;
+    text-transform: uppercase;
+  }
+
+  /* ── SKILLS ── */
+  .skills-section {
+    background: linear-gradient(180deg, #0f0804 0%, var(--dark-roast) 100%);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .skill-card {
+    padding: 2rem;
+    border: 1px solid rgba(245,239,230,0.06);
+    background: rgba(245,239,230,0.02);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .skill-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .skill-card:hover {
+    border-color: rgba(212,168,83,0.3);
+    background: rgba(212,168,83,0.04);
+    transform: translateY(-4px);
+  }
+
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .skill-card:hover::after { transform: scaleX(1); }
+
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-desc {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(245,239,230,0.45);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: radial-gradient(ellipse at center, #2c1506 0%, var(--dark-roast) 70%);
+    text-align: center;
+    padding: 8rem 2rem;
+  }
+
+  .contact-section .section-label {
+    justify-content: center;
+  }
+
+  .contact-section .section-label::before { display: none; }
+
+  .contact-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 4rem;
+  }
+
+  .contact-card {
+    padding: 2rem 2.5rem;
+    border: 1px solid rgba(212,168,83,0.2);
+    background: rgba(212,168,83,0.04);
+    min-width: 200px;
+    text-align: center;
+    transition: all 0.35s ease;
+  }
+
+  .contact-card:hover {
+    border-color: rgba(212,168,83,0.5);
+    background: rgba(212,168,83,0.08);
+    transform: translateY(-4px);
+  }
+
+  .contact-card-icon { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; }
+
+  .contact-card-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
+    color: var(--caramel);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-card-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--cream);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark-roast);
+    border-top: 1px solid rgba(245,239,230,0.06);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: rgba(245,239,230,0.25);
+    text-transform: uppercase;
+  }
+
+  footer p span { color: var(--caramel); }
+
+  /* ── DIVIDER ── */
+  .ornament {
+    text-align: center;
+    margin: 1rem 0;
+    color: rgba(212,168,83,0.3);
+    font-size: 1.2rem;
+    letter-spacing: 1rem;
+  }
+
+  /* SVG Coffee Art */
+  .latte-art-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-stats { gap: 2rem; }
+    .stat-number { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+
+  <div class="steam-container" id="steamContainer"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Portfolio — Senior Barista</p>
+
+    <div class="hero-photo-frame">
+      <div class="photo-placeholder">☕</div>
+    </div>
+
+    <h1 class="hero-name">Na<span>ina</span></h1>
+    <p class="hero-title">Senior Lead Barista &nbsp;·&nbsp; Blue Tokai Coffee</p>
+
+    <p class="hero-tagline">Crafting stories in every cup — one pour, one moment, one experience at a time.</p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">4+</span>
+        <span class="stat-label">Years Crafting</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Cafés Mastered</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">∞</span>
+        <span class="stat-label">Cups Poured</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-grid">
+      <!-- SVG Coffee Art -->
+      <div class="about-visual latte-art-container">
+        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" class="coffee-cup-art">
+          <defs>
+            <radialGradient id="coffeeGrad" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#6b3a1f"/>
+              <stop offset="70%" stop-color="#3d1f0a"/>
+              <stop offset="100%" stop-color="#1a0f07"/>
+            </radialGradient>
+            <radialGradient id="latteGrad" cx="50%" cy="30%" r="60%">
+              <stop offset="0%" stop-color="#f0d5a8" stop-opacity="0.9"/>
+              <stop offset="50%" stop-color="#c49a6c" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#8b5e3c" stop-opacity="0.4"/>
+            </radialGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Saucer -->
+          <ellipse cx="140" cy="295" rx="100" ry="14" fill="#2c1a0e"/>
+          <ellipse cx="140" cy="293" rx="97" ry="12" fill="#3d2210"/>
+          <!-- Cup body -->
+          <path d="M60,140 Q55,260 80,285 Q140,300 200,285 Q225,260 220,140 Z" fill="#2c1a0e"/>
+          <path d="M63,145 Q58,258 82,282 Q140,296 198,282 Q222,258 217,145 Z" fill="url(#coffeeGrad)"/>
+          <!-- Cup rim -->
+          <ellipse cx="140" cy="140" rx="80" ry="18" fill="#3d2210"/>
+          <ellipse cx="140" cy="138" rx="78" ry="16" fill="#4a2a14"/>
+          <!-- Coffee surface -->
+          <ellipse cx="140" cy="138" rx="70" ry="14" fill="url(#coffeeGrad)"/>
+          <!-- Latte art - heart / rosetta -->
+          <ellipse cx="140" cy="135" rx="62" ry="11" fill="url(#latteGrad)" opacity="0.6"/>
+          <!-- Latte art leaf -->
+          <path d="M140,130 C140,130 120,123 112,118 C118,125 128,132 140,133 C152,132 162,125 168,118 C160,123 140,130 140,130Z" fill="#f0d5a8" opacity="0.7"/>
+          <path d="M140,130 C140,130 122,121 115,114 C121,122 131,130 140,131 C149,130 159,122 165,114 C158,121 140,130 140,130Z" fill="#f0d5a8" opacity="0.5"/>
+          <ellipse cx="140" cy="127" rx="5" ry="4" fill="#f0d5a8" opacity="0.8"/>
+          <!-- Center line of latte -->
+          <path d="M140,118 Q140,126 140,132" stroke="#f0d5a8" stroke-width="1.5" opacity="0.6" fill="none"/>
+          <!-- Feathering lines -->
+          <path d="M140,119 Q132,122 125,120" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <path d="M140,122 Q132,125 126,123" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <path d="M140,125 Q133,128 128,126" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <path d="M140,119 Q148,122 155,120" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <path d="M140,122 Q148,125 154,123" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <path d="M140,125 Q147,128 152,126" stroke="#f0d5a8" stroke-width="0.8" opacity="0.4" fill="none"/>
+          <!-- Handle -->
+          <path d="M220,165 Q255,175 255,210 Q255,248 220,255" stroke="#3d2210" stroke-width="16" fill="none" stroke-linecap="round"/>
+          <path d="M220,165 Q248,176 248,210 Q248,245 220,255" stroke="#2c1a0e" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <!-- Steam lines -->
+          <path d="M115,108 Q110,95 118,82 Q126,68 120,55" stroke="rgba(245,239,230,0.25)" stroke-width="2" fill="none" stroke-linecap="round">
+            <animate attributeName="d" dur="3s" repeatCount="indefinite"
+              values="M115,108 Q110,95 118,82 Q126,68 120,55;M115,108 Q120,95 112,82 Q104,68 112,55;M115,108 Q110,95 118,82 Q126,68 120,55"/>
+          </path>
+          <path d="M140,105 Q135,90 143,75 Q151,60 145,45" stroke="rgba(245,239,230,0.2)" stroke-width="2" fill="none" stroke-linecap="round">
+            <animate attributeName="d" dur="2.5s" repeatCount="indefinite"
+              values="M140,105 Q135,90 143,75 Q151,60 145,45;M140,105 Q145,90 137,75 Q129,60 137,45;M140,105 Q135,90 143,75 Q151,60 145,45"/>
+          </path>
+          <path d="M165,108 Q170,95 162,82 Q154,68 160,55" stroke="rgba(245,239,230,0.25)" stroke-width="2" fill="none" stroke-linecap="round">
+            <animate attributeName="d" dur="3.5s" repeatCount="indefinite"
+              values="M165,108 Q170,95 162,82 Q154,68 160,55;M165,108 Q160,95 168,82 Q176,68 168,55;M165,108 Q170,95 162,82 Q154,68 160,55"/>
+          </path>
+          <!-- Gold accent ring on cup -->
+          <ellipse cx="140" cy="138" rx="78" ry="16" fill="none" stroke="rgba(212,168,83,0.25)" stroke-width="1"/>
+          <!-- Small decorative dots -->
+          <circle cx="85" cy="200" r="1.5" fill="rgba(212,168,83,0.2)"/>
+          <circle cx="195" cy="200" r="1.5" fill="rgba(212,168,83,0.2)"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="section-label">About Me</div>
+        <h2 class="section-title">The Art of <em>The Perfect Cup</em></h2>
+        <div class="ornament">· · ·</div>
+
+        <blockquote class="about-quote">Every espresso pull tells a story of craft, passion, and precision.</blockquote>
+
+        <p class="about-text">
+          With over four years immersed in the world of specialty coffee, I've grown from barista to Senior Lead — not just mastering the craft but shaping it within every team I've been part of. From quiet morning café services to high-octane IPL event setups, I bring the same devotion to every cup.
+        </p>
+
+        <div class="cert-badge">
+          <span class="badge-icon">🏆</span>
+          <div class="badge-text">
+            Certified Senior Barista<br>Blue Tokai Coffee · March 2026
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience-section">
+  <div class="container">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">Where I've <em>Crafted</em></h2>
+
+    <div class="timeline">
+      <!-- Blue Tokai -->
+      <div class="timeline-item" data-delay="0">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">October 2024 — Present</div>
+        <div class="timeline-company">Blue Tokai</div>
+        <div class="timeline-role">Senior Lead Barista</div>
+        <p class="timeline-desc">
+          Leading daily café operations while guiding the barista team to uphold service and quality standards. Specialising in advanced espresso calibration, specialty beverage creation, and ensuring consistent customer satisfaction through high-volume hours.
+        </p>
+      </div>
+
+      <!-- Xero Degree -->
+      <div class="timeline-item" data-delay="150">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">December 2022 — October 2024</div>
+        <div class="timeline-company">Xero Degree</div>
+        <div class="timeline-role">Senior Barista</div>
+        <p class="timeline-desc">
+          Thrived in a fast-paced café environment, mastering specialty coffee brewing, espresso machine calibration, and maintaining gold-standard quality. Developed sharp customer-service instincts while ensuring swift, accurate service during peak hours.
+        </p>
+      </div>
+
+      <!-- Back Bucks -->
+      <div class="timeline-item" data-delay="300">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">June 2022 — December 2022</div>
+        <div class="timeline-company">Back Bucks</div>
+        <div class="timeline-role">Barista</div>
+        <p class="timeline-desc">
+          Where it all began — honing espresso extraction, latte art fundamentals, and equipment care. Laid the foundation of discipline, consistency, and genuine hospitality that defines my craft today.
+        </p>
+      </div>
+    </div>
+
+    <!-- Events -->
+    <div class="events-card">
+      <div class="section-label" style="margin-bottom:0.75rem">Special Chapter</div>
+      <div class="events-card-title">Outdoor & Large-Scale Events</div>
+      <div class="events-locations">
+        <span class="location-tag">📍 Rajasthan</span>
+        <span class="location-tag">📍 Delhi</span>
+        <span class="location-tag">🏏 IPL Events</span>
+      </div>
+      <p class="timeline-desc">
+        Operated as Senior Lead Barista for high-volume outdoor events — including the prestigious IPL — managing coffee preparation, customer service, on-ground cash transactions, and full team coordination to deliver seamless service at scale.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section">
+  <div class="container">
+    <div class="section-label">Expertise</div>
+    <h2 class="section-title">What I <em>Bring</em></h2>
+
+    <div class="skills-grid">
+      <div class="skill-card" data-delay="0">
+        <span class="skill-icon">☕</span>
+        <div class="skill-name">Espresso Mastery</div>
+        <p class="skill-desc">Extraction, calibration, and brewing techniques refined across premium café environments.</p>
+      </div>
+      <div class="skill-card" data-delay="80">
+        <span class="skill-icon">🎨</span>
+        <div class="skill-name">Latte Art</div>
+        <p class="skill-desc">Specialty coffee preparation with latte art — hearts, rosettas, and tulips.</p>
+      </div>
+      <div class="skill-card" data-delay="160">
+        <span class="skill-icon">👥</span>
+        <div class="skill-name">Team Leadership</div>
+        <p class="skill-desc">Supervising shifts, mentoring junior baristas, and coordinating high-volume workflows.</p>
+      </div>
+      <div class="skill-card" data-delay="240">
+        <span class="skill-icon">⚡</span>
+        <div class="skill-name">Fast-Paced Operations</div>
+        <p class="skill-desc">Proven composure and efficiency during IPL events and peak café service hours.</p>
+      </div>
+      <div class="skill-card" data-delay="320">
+        <span class="skill-icon">🌿</span>
+        <div class="skill-name">Hygiene & Food Safety</div>
+        <p class="skill-desc">Strict compliance with hygiene and food safety standards across all operations.</p>
+      </div>
+      <div class="skill-card" data-delay="400">
+        <span class="skill-icon">📦</span>
+        <div class="skill-name">Inventory Management</div>
+        <p class="skill-desc">Stock tracking, ordering, and managing equipment care for consistent quality.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's <em>Connect</em></h2>
+    <p style="font-size:1.15rem; font-weight:300; color:rgba(245,239,230,0.55); margin-top:1rem; max-width:380px; margin-left:auto; margin-right:auto; line-height:1.8;">
+      Open to senior barista opportunities where craft, leadership, and passion for coffee truly matter.
+    </p>
+
+    <div class="contact-cards">
+      <div class="contact-card">
+        <span class="contact-card-icon">📱</span>
+        <span class="contact-card-label">Phone</span>
+        <span class="contact-card-value">+91 8882938264</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-card-icon">✉️</span>
+        <span class="contact-card-label">Email</span>
+        <span class="contact-card-value">nainasheikh3868@gmail.com</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-card-icon">📍</span>
+        <span class="contact-card-label">Location</span>
+        <span class="contact-card-value">Khoda Colony, Ghaziabad</span>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem; display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap;">
+      <div style="font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-spacing:0.3em; color:rgba(245,239,230,0.35); text-transform:uppercase; display:flex; align-items:center; gap:0.5rem;">
+        <span>🇮🇳</span> Hindi & English
+      </div>
+      <div style="color:rgba(245,239,230,0.15);">·</div>
+      <div style="font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-spacing:0.3em; color:rgba(245,239,230,0.35); text-transform:uppercase;">
+        Uttar Pradesh, India
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Crafted with <span>☕</span> for <span>Naina</span> — Senior Lead Barista &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<script>
+  // Generate steam particles
+  const container = document.getElementById('steamContainer');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.classList.add('steam-particle');
+    const size = Math.random() * 3 + 1;
+    const left = 20 + Math.random() * 60;
+    const duration = 8 + Math.random() * 10;
+    const delay = Math.random() * 12;
+    const startY = 50 + Math.random() * 40;
+    p.style.cssText = `
+      left: ${left}%;
+      bottom: ${startY}%;
+      width: ${size}px;
+      height: ${size * 3}px;
+      animation-duration: ${duration}s;
+      animation-delay: ${delay}s;
+    `;
+    container.appendChild(p);
+  }
+
+  // Intersection Observer for animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = el.dataset.delay || 0;
+        setTimeout(() => el.classList.add('visible'), parseInt(delay));
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.timeline-item, .skill-card').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
